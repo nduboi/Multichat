@@ -1,0 +1,21 @@
+{
+  "name": "multichat",
+  "version": "1.0.0",
+  "description": "Chat with friend Nduboi",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm i  && node index.js"
+  },
+  "keywords": [
+    "chat",
+    "nduboi",
+    "video"
+  ],
+  "author": "Nduboi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-media-server": "^2.4.9",
+    "socket.io": "^4.5.4"
+  }
+}

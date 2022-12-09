@@ -45,13 +45,21 @@
     <script src="https://cdn.socket.io/4.5.3/socket.io.min.js" integrity="sha384-WPFUvHkB1aHA5TDSZi6xtDgkF0wXJcIIxXhC6h8OT8EH3fC5PWro5pWJ1THjcfEi" crossorigin="anonymous"></script>
     <script>       
         const socket = io();
-        var fenetreOuverte;
-        var name = $_GET('name');
-        if (name == 'null') {
+        const name = $_GET('name');
+        const channel = $_GET('channel');
+
+        if (name == 'null'){
             window.location.href = "https://google.fr";
         }else{
-            socket.emit('Joueur conecter', name);
+            if(channel == 'null'){
+            window.location.href = "https://google.fr";
+            }else{
+                console.log("Nom : " +name);
+                console.log("Channel : " +channel);
+                socket.emit('Joueur conecter', {name : name , channel : channel});
+            }
         }
+
         function $_GET(param) {
             var vars = {};
             window.location.href.replace( location.hash, '' ).replace( 
@@ -66,26 +74,28 @@
             }
             return vars;
         }
+        
+        
         var send = function(){
             var message = document.getElementById('message');
-            socket.emit("chat message", {name : name, message : message.value});
+            socket.emit("chat message", {name : name, message : message.value, channel : channel});
             message.value = '';
         }
         window.onload = () => {
             
-            socket.on("chat message", (msg)=>{
+            socket.on('chat message : '+channel, (msg)=>{
                 document.querySelector("#messages").innerHTML += `<p class="text-white pl-2"><b>${msg.name}</b> : ${msg.message}</p>`; 
             })
-            socket.on("rejoint", (message)=>{
-                document.querySelector("#messages").innerHTML += `<p class="text-white pl-2"><b>`+message+`</b></p>`; 
+            socket.on(`rejoint : ${channel}`, (message)=>{
+                document.querySelector("#messages").innerHTML += `<p class="text-white pl-2"><b>${message.name}</b> ${message.message} <b> ${message.channel} </b></p>`; 
             })
 
-            socket.on("leave", (message)=>{
-                document.querySelector("#messages").innerHTML += `<p class="text-white pl-2"><b>`+message+`</b></p>`; 
+            socket.on(`leave : ${channel}`, (message)=>{
+                document.querySelector("#messages").innerHTML += `<p class="text-white pl-2"><b>${message.name}</b> ${message.message} <b> ${message.channel} </b></p>`; 
             })
         }
         var deco = function(){
-            socket.emit("deconexion", name);
+            socket.emit("deconexion", {pseudo : name, channel : channel});
             window.location.href = "https://google.fr";
         }
         

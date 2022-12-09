@@ -1,6 +1,7 @@
 const app = require("express")();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
+const { channel } = require("diagnostics_channel");
 const NodeMediaServer = require('node-media-server');
 
 const config = {
@@ -39,10 +40,10 @@ app.get("/rtmp", (req, res) => {
 })
 
 io.on("connection", (socket) => {
-    socket.on("Joueur conecter", pseudo => {
-        console.log("Utilisateur : " + pseudo + " connecter Chat"); 
-        var join = pseudo +" a rejoint le chat"
-        io.emit("rejoint", join);
+    socket.on(`Joueur conecter`, (info) => {
+        console.log(`Users : ${info.name} --> Channel : ${info.channel}`);
+        const join = "a rejoint le chat sur le chanel"; 
+        io.emit(`rejoint : ${info.channel}`, {name : info.name, channel : info.channel, message : join } );
     })
     socket.on("Changementdesite", pseudo => {
         console.log("Utilisateur : " + pseudo + " a changer de page");
@@ -51,13 +52,14 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("déconnecté");
     })
-    socket.on("deconexion", pseudo => {
-        console.log("Utilisateur : " + pseudo + " déconnecter"); 
-        var deconexion = pseudo + " a quitter le chat"
-        io.emit("leave", deconexion);
+    socket.on("deconexion", (info) => {
+        console.log(`Utilisateur :  ${info.pseudo}   déconnecter`); 
+        const deconexion = ` a quitter le chat`
+        io.emit(`leave : ${info.channel}`, {name : info.pseudo, channel : info.channel, message : deconexion });
     })
     socket.on("chat message", (msg) =>{
-        io.emit("chat message", msg);
+        console.log(`Users : ${msg.name} --> Channel : ${msg.channel} --> Message : ${msg.message}`);
+        io.emit(`chat message : ${msg.channel}` , msg);
     })
     socket.on("changementnom", name => {
         console.log("Utilisateur : " + name + ", connecter Nom Chat");

@@ -48,17 +48,11 @@
         const socket = io();
         const name = $_GET('name');
         const channel = $_GET('channel');
-
-        if (name == 'null'){
-            window.location.href = "https://google.fr";
+        
+        if (name == null || channel == null){
+            window.location.href = "/namechat";
         }else{
-            if(channel == 'null'){
-            window.location.href = "https://google.fr";
-            }else{
-                console.log("Nom : " +name);
-                console.log("Channel : " +channel);
-                socket.emit('Joueur conecter', {name : name , channel : channel});
-            }
+            socket.emit('Joueur conecter', {name : name , channel : channel});
         }
 
         function $_GET(param) {

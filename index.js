@@ -35,6 +35,9 @@ app.get("/chat", (req, res) => {
 app.get("/namechat", (req, res) => {
     res.sendFile(__dirname + "/name.html"); //Nom Pour Chat
 })
+app.get("/namechannel", (req, res) => {
+    res.sendFile(__dirname + "/nameinfo.html"); //Nom Pour Chat
+})
 app.get("/namevideo", (req, res) => {
     res.sendFile(__dirname + "/namevideo.html"); //Nom Pour Vidéo
 })

@@ -12,12 +12,14 @@
     <h1 class="text-red-700 font-bold text-xl text-center m-5">Choix du Nom</h1>
     <form method="get" action="/chat" class="h-1/2 w-full flex">
         <input type="text" name="name" placeholder="Nom" class="w-1/2 h-1/2 rounded-xl m-2	text-center">
-        <input type="text" name="channel" placeholder="Channel" class="w-1/2 h-1/2 rounded-xl m-2	text-center">
-        <button   class="w-1/2 h-1/2 bg-white rounded-xl m-2"> Envoyer</button>    
+        <input type="text" id="channel" name="channel" hidden value="" >
+        <button onclick="send()"   class="w-1/2 h-1/2 bg-white rounded-xl m-2"> Envoyer</button>    
     </form>
 </body>
 </html>
 <script>
+    var channel = $_GET('channel');
+    document.getElementById('channel').value = channel;
     // var name = $_GET('name');
     // var channel = $_GET('channel');
     // if (name != null && channel != null) {

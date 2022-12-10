@@ -46,13 +46,23 @@
     <script src="https://cdn.socket.io/4.5.3/socket.io.min.js" integrity="sha384-WPFUvHkB1aHA5TDSZi6xtDgkF0wXJcIIxXhC6h8OT8EH3fC5PWro5pWJ1THjcfEi" crossorigin="anonymous"></script>
     <script>       
         const socket = io();
-        const name = $_GET('name');
-        const channel = $_GET('channel');
+        // var name = $_GET('name');
+        var channel = $_GET('channel');
+        var psw = $_GET('psw');
+        var name = decodeURI($_GET( 'name' ));
         
         if (name == null || channel == null){
             window.location.href = "/namechat";
         }else{
-            socket.emit('Joueur conecter', {name : name , channel : channel});
+            if(psw == null){
+                psw = "null";
+            }else{
+                console.log(psw);
+            }
+            name = unescape(encodeURIComponent(name));
+            socket.emit('Joueur conecter', {name_encode : name , channel : channel, psw : psw});
+            name =  decodeURIComponent(escape(name));
+
         }
 
         function $_GET(param) {
@@ -80,6 +90,14 @@
             
             socket.on('chat message : '+channel, (msg)=>{
                 document.querySelector("#messages").innerHTML += `<p class="text-white pl-2"><b>${msg.name}</b> : ${msg.message}</p>`; 
+            })
+            socket.on(`chat_name : ${name}`, (info) =>{
+                var chat = document.getElementById('chatfont').innerHTML = `Chat : ${info.channel}`;
+            })
+            socket.on(`globalvs : ${name}`, (info) =>{
+                const channel = info.channel;
+                window.location.href = `/chat?name=${info.name}&channel=${info.channel}`;
+                console.log(channel);
             })
             socket.on(`rejoint : ${channel}`, (message)=>{
                 document.querySelector("#messages").innerHTML += `<p class="text-white pl-2"><b>${message.name}</b> ${message.message} <b> ${message.channel} </b></p>`; 

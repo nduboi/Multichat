@@ -41,35 +41,68 @@ app.get("/namevideo", (req, res) => {
 app.get("/rtmp", (req, res) => {
     res.sendFile(__dirname + "/rtmp.html"); //Jeu
 })
+app.get("/test", (req, res) => {
+    res.sendFile(__dirname + "/test.html"); //test
+})
 
 io.on("connection", (socket) => {
     socket.on(`Joueur conecter`, (info) => {
-        console.log(`Users : ${info.name} --> Channel : ${info.channel}`);
-        const join = "a rejoint le chat sur le chanel"; 
-        io.emit(`rejoint : ${info.channel}`, {name : info.name, channel : info.channel, message : join } );
+        var name = decodeURIComponent(escape(info.name_encode))
+
+        if(info.channel == "Admin"){
+            if(info.psw == "662768"){
+                //Envoie sur le channel Admin
+                io.emit(`chat_name : ${name}`, {name : name, channel : info.channel});
+                console.log(`Users : ${name} --> Channel : ${info.channel}`);
+                const join = "a rejoint le chat sur le chanel"; 
+                io.emit(`rejoint : ${info.channel}`, {name : name, channel : info.channel, message : join } );
+            }else{
+                //Redirection vers le chat global
+                console.log(`Users : ${name} --> Channel : Admin -> Global`);
+                const join = "a rejoint le chat sur le chanel"; 
+                // io.emit(`rejoint : ${info.channel}`, {name : info.name, channel : "Unori", message : join } );
+                io.emit(`globalvs : ${name}`, {name : name, channel : "Global" } );
+            }
+        }else{
+            io.emit(`chat_name : ${name}`, {name : name, channel : info.channel});
+            console.log(`Users : ${name} --> Channel : ${info.channel}`);
+            const join = "a rejoint le chat sur le chanel"; 
+            io.emit(`rejoint : ${info.channel}`, {name : name, channel : info.channel, message : join } );
+        }        
     })
     socket.on("Changementdesite", pseudo => {
+        var pseudo = decodeURIComponent(escape(pseudo))
         console.log("Utilisateur : " + pseudo + " a changer de page");
         io.emit("Changementdesiteconfirmation", pseudo);
     })
-    socket.on("disconnect", () => {
-        console.log("déconnecté");
-    })
+    // socket.on("disconnect", () => {
+    //     console.log("déconnecté");
+    // })
     socket.on("deconexion", (info) => {
-        console.log(`Utilisateur :  ${info.pseudo}   déconnecter`); 
+        var name = decodeURIComponent(escape(info.pseudo))
+        console.log(`Utilisateur :  ${name}   déconnecter`); 
         const deconexion = ` a quitter le chat`
-        io.emit(`leave : ${info.channel}`, {name : info.pseudo, channel : info.channel, message : deconexion });
+        io.emit(`leave : ${info.channel}`, {name : name, channel : info.channel, message : deconexion });
     })
     socket.on("chat message", (msg) =>{
-        console.log(`Users : ${msg.name} --> Channel : ${msg.channel} --> Message : ${msg.message}`);
-        io.emit(`chat message : ${msg.channel}` , msg);
+        var name = decodeURIComponent(escape(msg.name))
+        console.log(`Users : ${name} --> Channel : ${msg.channel} --> Message : ${msg.message}`);
+        io.emit(`chat message : ${msg.channel}` , {message : msg.message, name : name, channel : msg.channel});
     })
     socket.on("changementnom", name => {
+        var name = decodeURIComponent(escape(name))
         console.log("Utilisateur : " + name + ", connecter Nom Chat");
     })
     socket.on("changementnomvideo", name => {
+        var name = decodeURIComponent(escape(name))
         console.log("Utilisateur : " + name + ", connecter Nom Vidéo");
     })
+    // socket.on("encodeelement", (info) =>{
+    //     console.log(`Element : ${info.encode}`)
+    //     element_decode = decodeURIComponent(escape(info.encode))
+    //     console.log(`Element decode : ${element_decode}`)
+    //     io.emit(`element : decode`, {decode : element_decode})
+    // })
 })
 var port = process.env.PORT || 3000;
 http.listen(port, () => {

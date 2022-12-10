@@ -13,13 +13,24 @@
     <form method="get" action="/chat" class="h-1/2 w-full flex">
         <input type="text" name="name" placeholder="Nom" class="w-1/2 h-1/2 rounded-xl m-2	text-center">
         <input type="text" id="channel" name="channel" hidden value="" >
+        <input type="text" id="psw" name="psw" hidden value="">
         <button onclick="send()"   class="w-1/2 h-1/2 bg-white rounded-xl m-2"> Envoyer</button>    
     </form>
 </body>
 </html>
 <script>
     var channel = $_GET('channel');
-    document.getElementById('channel').value = channel;
+    if(channel != null){
+        document.getElementById('channel').value = channel;
+    }else{
+        window.location.href = "/namechat";
+    }
+    var psw = $_GET('psw');
+    if(psw != null){
+        document.getElementById('psw').value = psw;
+    }else{
+        document.getElementById('psw').value = "";
+    }
     // var name = $_GET('name');
     // var channel = $_GET('channel');
     // if (name != null && channel != null) {

@@ -62,7 +62,6 @@
             name = unescape(encodeURIComponent(name));
             socket.emit('Joueur conecter', {name_encode : name , channel : channel, psw : psw});
             name =  decodeURIComponent(escape(name));
-
         }
 
         function $_GET(param) {
@@ -83,7 +82,10 @@
         
         var send = function(){
             var message = document.getElementById('message');
+            var name = decodeURI($_GET( 'name' ));
+            var name = unescape(encodeURIComponent(name));
             socket.emit("chat message", {name : name, message : message.value, channel : channel});
+            var name =  decodeURIComponent(escape(name));
             message.value = '';
         }
         window.onload = () => {

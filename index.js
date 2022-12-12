@@ -47,6 +47,9 @@ app.get("/rtmp", (req, res) => {
 app.get("/test", (req, res) => {
     res.sendFile(__dirname + "/test.html"); //test
 })
+app.get("/friend", (req, res) => {
+    res.sendFile(__dirname + "/test.html"); //test
+})
 
 io.on("connection", (socket) => {
     socket.on(`Joueur conecter`, (info) => {
@@ -72,6 +75,57 @@ io.on("connection", (socket) => {
             const join = "a rejoint le chat sur le chanel"; 
             io.emit(`rejoint : ${info.channel}`, {name : name, channel : info.channel, message : join } );
         }        
+    })
+    socket.on("nextquestion", (info) =>{
+        var name = decodeURIComponent(escape(info.name));
+        console.log(`Utilisateur : ${name} --> Question : ${info.nbrquestion}`);
+
+        if(info.nbrquestion == 2){
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+        if(info.nbrquestion == 3){
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+        if(info.nbrquestion == 4){
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+        if(info.nbrquestion == 5){
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }  
+        if(info.nbrquestion == 6){
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+    })
+
+    socket.on("test_connected", (info) =>{
+        var name = decodeURIComponent(escape(info.name));
+        console.log(`Utilisateur : ${name} `);
+        if(info.nbr_question == 1){
+            var question = "Quelle est notre niveaux d'amitié ? (1 petite connaissance - 10 amis proche)";
+            var choix = `<div class=""><input type="radio" id="one_button question" name="choix" value="1"><label for="one_button">1</label><input type="radio" id="six_button question" name="choix" value="6"><label for="six_button">6</label><br><input type="radio" id="two_button question" name="choix" value="2"><label for="two_button">2</label><input type="radio" id="seven_button question" name="choix" value="7"><label for="seven_button">7</label><br><input type="radio" id="three_button question" name="choix" value="3"><label for="three_button">3</label><input type="radio" id="eight_button question" name="choix" value="8"><label for="eight_button">8</label><br><input type="radio" id="four_button question" name="choix" value="4"><label for="four_button">4</label><input type="radio" id="nine_button question" name="choix" value="9"><label for="nine_button">9</label><br><input type="radio" id="five_button question" name="choix" value="5" checked><label for="five_button">5</label><input type="radio" id="ten_button question" name="choix" value="10"><label for="ten_button">10</label><br></div><input type="text" name="name" value="${name}" hidden> <input type="text" name="nbr_question" value="${info.nbr_question}" hidden> <input type="text" name="question" value="${question}" hidden>`
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+        if(info.nbr_question == 2){
+            var question = "Si tu devrais me décrire ";
+            var choix = `<div class=""><input type="radio" id="one_button question" name="choix" value="gentil"><label for="one_button">Gentil</label><input type="radio" id="six_button question" name="choix" value="chiant"><label for="six_button">Chiant</label><br><input type="radio" id="two_button question" name="choix" value="Cool"><label for="two_button">Cool</label><input type="radio" id="seven_button question" name="choix" value="attachant"><label for="seven_button">Attachant</label><br><input type="radio" id="three_button question" name="choix" value="Craquant"><label for="three_button">Cranquant</label><input type="radio" id="eight_button question" name="choix" value="Ambicieux"><label for="eight_button">Ambicieux</label><br><input type="radio" id="four_button question" name="choix" value="Intelligent"><label for="four_button">Intelligent</label><input type="radio" id="nine_button question" name="choix" value="passionnant"><label for="nine_button">Passionnant</label><br><input type="radio" id="five_button question" name="choix" value="Sexy" checked><label for="five_button">So sexy</label><input type="radio" id="ten_button question" name="choix" value="inconsient"><label for="ten_button">Inconsient</label><br></div><input type="text" name="name" value="${name}" hidden> <input type="text" name="nbr_question" value="${info.nbr_question}" hidden> <input type="text" name="question" value="${question}" hidden>`
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+        if(info.nbr_question == 3){
+            var question = "Arriverais tu as survivre avec moi sur une île déserte ?";
+            var choix = `<div class=""><input type="radio" id="one_button question" name="choix" value="oui"><label for="one_button">Oui</label><input type="radio" id="six_button question" name="choix" value="Non"><label for="six_button">Non</label></div><input type="text" name="name" value="${name}" hidden> <input type="text" name="nbr_question" value="${info.nbr_question}" hidden> <input type="text" name="question" value="${question}" hidden>`
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+        if(info.nbr_question == 4){
+            var question = "Quelle est notre niveaux d'amitié ? (1 petite connaissance - 10 amis proche)";
+            var choix = `<div class=""><input type="radio" id="one_button question" name="choix" value="1"><label for="one_button">1</label><input type="radio" id="six_button question" name="choix" value="6"><label for="six_button">6</label><br><input type="radio" id="two_button question" name="choix" value="2"><label for="two_button">2</label><input type="radio" id="seven_button question" name="choix" value="7"><label for="seven_button">7</label><br><input type="radio" id="three_button question" name="choix" value="3"><label for="three_button">3</label><input type="radio" id="eight_button question" name="choix" value="8"><label for="eight_button">8</label><br><input type="radio" id="four_button question" name="choix" value="4"><label for="four_button">4</label><input type="radio" id="nine_button question" name="choix" value="9"><label for="nine_button">9</label><br><input type="radio" id="five_button question" name="choix" value="5" checked><label for="five_button">5</label><input type="radio" id="ten_button question" name="choix" value="10"><label for="ten_button">10</label><br></div><input type="text" name="name" value="${name}" hidden> <input type="text" name="nbr_question" value="${info.nbr_question}" hidden> <input type="text" name="question" value="${question}" hidden>`
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+        if(info.nbr_question == 5){
+            var question = "Quelle est notre niveaux d'amitié ? (1 petite connaissance - 10 amis proche)";
+            var choix = `<div class=""><input type="radio" id="one_button question" name="choix" value="1"><label for="one_button">1</label><input type="radio" id="six_button question" name="choix" value="6"><label for="six_button">6</label><br><input type="radio" id="two_button question" name="choix" value="2"><label for="two_button">2</label><input type="radio" id="seven_button question" name="choix" value="7"><label for="seven_button">7</label><br><input type="radio" id="three_button question" name="choix" value="3"><label for="three_button">3</label><input type="radio" id="eight_button question" name="choix" value="8"><label for="eight_button">8</label><br><input type="radio" id="four_button question" name="choix" value="4"><label for="four_button">4</label><input type="radio" id="nine_button question" name="choix" value="9"><label for="nine_button">9</label><br><input type="radio" id="five_button question" name="choix" value="5" checked><label for="five_button">5</label><input type="radio" id="ten_button question" name="choix" value="10"><label for="ten_button">10</label><br></div><input type="text" name="name" value="${name}" hidden> <input type="text" name="nbr_question" value="${info.nbr_question}" hidden> <input type="text" name="question" value="${question}" hidden>`
+            socket.emit('question : ' + name, {message : question, choice : choix} )
+        }
+
     })
     socket.on("Changementdesite", pseudo => {
         var pseudo = decodeURIComponent(escape(pseudo))

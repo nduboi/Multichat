@@ -5,11 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Friend's Test</title>
+    <!-- <script src="https://cdn.tailwindcss.com/"></script> -->
 </head>
 <body >
     <div id="container">
         <form id="FORM">
-
+            
         </form>
     </div>   
 
@@ -18,7 +19,8 @@
         const socket = io();
         var name = decodeURI($_GET( 'name' ));
         var message = "";
-
+        var finish = decodeURI($_GET('finish'))
+        
 
         
         function send(){
@@ -44,12 +46,27 @@
             var name = unescape(encodeURIComponent(name));
             var nbr_question = decodeURI($_GET('nbr_question'))
             if(nbr_question == "null"){
-                nbr_question = 1
+                nbr_question = 1 
             }else{
-                nbr_question++
+                if(nbr_question <= 5){
+                    nbr_question++
+                }
+            }
+            if(finish == "true"){
+                var name = decodeURI($_GET( 'name' ));
+                var name = unescape(encodeURIComponent(name));
+
+                socket.emit("finish_test", {name : name})
+                
+            }else{
+
             }
             console.log(nbr_question)
             socket.emit("test_connected", {name : name, nbr_question : nbr_question });
+            var name = decodeURI($_GET( 'name' ));
+            socket.on('finish : ' + name, (info)=>{
+                document.querySelector("#container").innerHTML = info.message ;
+            })
             var name = decodeURI($_GET( 'name' ));
             socket.on('question : ' + name, (msg)=>{
                 document.querySelector("#FORM").innerHTML = `<h1 class="text-white pl-2">${msg.message}</h1> <br> ${msg.choice} <br> <input type="submit" value="Suivant" onclick="send()">`; 

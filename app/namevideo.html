@@ -11,15 +11,17 @@
 <body class="h-screen w-screen bg-slate-800 flex flex-col">
     <h1 class="text-red-700 font-bold text-xl text-center m-5">Choix du Stream</h1>
     <form method="get" class="h-1/2 w-full flex">
-        <input type="text" name="name" placeholder="Nom" class="w-1/2 h-1/2 rounded-xl m-2	text-center">
+        <input type="text" name="name" placeholder="Channel" class="w-1/2 h-1/2 rounded-xl m-2	text-center">
+        <input type="text" name="viewers" placeholder="Nom" class="w-1/2 h-1/2 rounded-xl m-2	text-center">
         <input type="submit" value="Envoyer" onclick="send()" class="w-1/2 h-1/2 bg-white rounded-xl m-2">
     </form>
 </body>
 </html>
 <script>
     var name = $_GET('name');
-    if (name != 'null') {
-        window.location.href = "/rtmp?name=" + name;
+    var viewers = $_GET('viewers');
+    if (name != 'null' && viewers != 'null') {
+        window.location.href = "/rtmp?name=" + name + "&viewers=" + viewers;
         socket.emit('changementnomvideo', name);
     }
     function $_GET(param) {

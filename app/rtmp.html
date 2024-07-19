@@ -42,7 +42,6 @@
             }
             if(viewers == 'null'){
                 window.location.href = "http://localhost/";
-                
             }
             socket.on('newmessage stream : '+name, (data) => {
                 document.getElementById('textview').innerHTML += data.viewers + " : " + data.message + "<br>";
@@ -66,7 +65,7 @@
             alert('Fin');
         };
         var name = decodeURI($_GET('name'));
-        const url = 'ws://192.168.1.28:8080/live/'+name+'.flv';
+        const url = 'ws://localhost:8080/live/'+name+'.flv';
         
         if (flvjs.isSupported()) {
             var videoElement = document.getElementById('videoElement');

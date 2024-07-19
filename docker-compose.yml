@@ -1,0 +1,11 @@
+version: '3.0'
+services:
+  multichat:
+    build: ./app
+    container_name: Multichat
+    ports:
+      - "80:80"
+      - "1935:1935"
+      - "8080:8080"
+    volumes:
+      - ./app:/app

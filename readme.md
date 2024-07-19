@@ -1,5 +1,5 @@
 # Multichat by nduboi ⛵
-Project Personel  
+Projet Personel  
 ## Download 💾
 
 To download the app you need to do this command

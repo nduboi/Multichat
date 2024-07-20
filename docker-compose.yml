@@ -1,0 +1,9 @@
+version: '3.0'
+services:
+  multichat:
+    image: nduuboi/multichat:latest
+    container_name: Multichat
+    ports:
+      - "80:80"
+      - "1935:1935"
+      - "8080:8080"

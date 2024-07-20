@@ -28,8 +28,8 @@ nms.run();
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html"); //Menu 
 })
-app.get("/build/img/Nduboi.ico", (req, res) => {
-    res.sendFile(__dirname + "/build/img/Nduboi.ico"); //Menu 
+app.get("build/img/Nduboi.ico", (req, res) => {
+    res.sendFile(__dirname + "build/img/Nduboi.ico"); //Menu 
 })
 app.get("/chat", (req, res) => {
     res.sendFile(__dirname + "/chat.html"); //Chat
